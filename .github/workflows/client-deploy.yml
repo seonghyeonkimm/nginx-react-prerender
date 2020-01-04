@@ -28,12 +28,12 @@ jobs:
         cd client
 
     - name: install
-      uses: borales/actions-yarn@v2
+      uses: Borales/actions-yarn@v2.1.0
       with:
         cmd: install
 
     - name: build
-      uses: borales/actions-yarn@v2
+      uses: Borales/actions-yarn@v2.1.0
       with:
         cmd: build
 
