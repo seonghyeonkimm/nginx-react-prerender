@@ -57,7 +57,7 @@ jobs:
         path: ./client/build
 
     # sync assets
-    - uses: jakejarvis/s3-sync-action@master
+    - uses: jakejarvis/s3-sync-action@v0.5.0
       with:
         args: --cache-control 'max-age=31536000' --exclude '*.html' --exclude '*.js.map'
       env:
@@ -68,7 +68,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     # sync index.html
-    - uses: jakejarvis/s3-sync-action@master
+    - uses: jakejarvis/s3-sync-action@v0.5.0
       with:
         args: --cache-control 'max-age=30' --include '*.html'
       env:
