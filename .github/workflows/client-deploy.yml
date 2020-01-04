@@ -23,21 +23,20 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: move to client folder
-      run: |
-        cd client
-
     - name: install
+      working-directory: ./client
       uses: Borales/actions-yarn@v2.1.0
       with:
         cmd: install
 
     - name: build
+      working-directory: ./client
       uses: Borales/actions-yarn@v2.1.0
       with:
         cmd: build
 
     - name: upload application build result
+      working-directory: ./client
       uses: actions/upload-artifact@v1
       with:
         name: build
