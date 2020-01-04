@@ -54,6 +54,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: build
+        path: ./client/build
 
     # sync assets
     - uses: jakejarvis/s3-sync-action@master
