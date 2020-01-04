@@ -23,20 +23,21 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: install yarn
+      run: |
+        curl -o- -L https://yarnpkg.com/install.sh | bash
+
     - name: install
-      working-directory: client
-      uses: Borales/actions-yarn@v2.1.0
-      with:
-        cmd: install
+      working-directory: ./client
+      run: |
+        yarn install
 
     - name: build
-      working-directory: client
-      uses: Borales/actions-yarn@v2.1.0
-      with:
-        cmd: build
+      working-directory: ./client
+      run: |
+        yarn build
 
     - name: upload application build result
-      working-directory: client
       uses: actions/upload-artifact@v1
       with:
         name: build
