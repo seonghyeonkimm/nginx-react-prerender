@@ -1,0 +1,78 @@
+name: Frontend Application Deploy
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+    - 'clients/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: move to client folder
+      run: |
+        cd clients
+
+    - name: install
+      uses: borales/actions-yarn@v2
+      with:
+        cmd: install
+
+    - name: build
+      uses: borales/actions-yarn@v2
+      with:
+        cmd: build
+
+    - name: upload application build result
+      uses: actions/upload-artifact@v1
+      with:
+        name: build
+        path: ./build
+
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: download application build result
+      uses: actions/download-artifact@v1
+      with:
+        name: build
+
+    # sync assets
+    - uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --cache-control 'max-age=31536000' --exclude '*.html' --exclude '*.js.map'
+      env:
+        SOURCE_DIR: './clients/build'
+        AWS_REGION: 'ap-northeast-2'
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    # sync index.html
+    - uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --cache-control 'max-age=30' --include '*.html'
+      env:
+        SOURCE_DIR: './clients/build'
+        AWS_REGION: 'ap-northeast-2'
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
