@@ -24,21 +24,21 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: install
-      working-directory: ./client
       uses: Borales/actions-yarn@v2.1.0
       with:
+        working-directory: ./client
         cmd: install
 
     - name: build
-      working-directory: ./client
       uses: Borales/actions-yarn@v2.1.0
       with:
+        working-directory: ./client
         cmd: build
 
     - name: upload application build result
-      working-directory: ./client
       uses: actions/upload-artifact@v1
       with:
+        working-directory: ./client
         name: build
         path: ./build
 
