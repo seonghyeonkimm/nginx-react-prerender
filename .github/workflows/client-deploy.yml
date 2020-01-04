@@ -70,7 +70,7 @@ jobs:
     # sync index.html
     - uses: jakejarvis/s3-sync-action@v0.5.0
       with:
-        args: --acl public-read --cache-control 'max-age=30' --include '*.html' --exclude '*'
+        args: --acl public-read --cache-control 'max-age=30' --exclude '*' --include '*.html'
       env:
         SOURCE_DIR: './client/build'
         AWS_REGION: 'ap-northeast-2'
