@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    // puppeteer가 cache하는 순간을 해당 전역 변수로 판단
+    window.prerenderReady = true;
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
