@@ -59,7 +59,7 @@ jobs:
     # sync assets
     - uses: jakejarvis/s3-sync-action@v0.5.0
       with:
-        args: --cache-control 'max-age=31536000' --exclude '*.html' --exclude '*.js.map'
+        args: --cache-control 'max-age=31536000' --exclude '*.html' --exclude '*.js.map --exclude '*.js.LICENSE''
       env:
         SOURCE_DIR: './client/build'
         AWS_REGION: 'ap-northeast-2'
@@ -70,7 +70,7 @@ jobs:
     # sync index.html
     - uses: jakejarvis/s3-sync-action@v0.5.0
       with:
-        args: --cache-control 'max-age=30' --include '*.html'
+        args: --cache-control 'max-age=30' --include '*.html --exclude '*''
       env:
         SOURCE_DIR: './client/build'
         AWS_REGION: 'ap-northeast-2'
