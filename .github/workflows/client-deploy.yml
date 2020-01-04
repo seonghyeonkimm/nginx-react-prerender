@@ -26,19 +26,19 @@ jobs:
     - name: install
       uses: Borales/actions-yarn@v2.1.0
       with:
-        working-directory: ./client
+        entrypoint: ./client
         cmd: install
 
     - name: build
       uses: Borales/actions-yarn@v2.1.0
       with:
-        working-directory: ./client
+        entrypoint: ./client
         cmd: build
 
     - name: upload application build result
       uses: actions/upload-artifact@v1
       with:
-        working-directory: ./client
+        entrypoint: ./client
         name: build
         path: ./build
 
