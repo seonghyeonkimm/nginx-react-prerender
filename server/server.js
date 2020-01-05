@@ -15,7 +15,8 @@ app.get('*', async (req, res) => {
     browserWSEndpoint = await browser.wsEndpoint();
   }
 
-  const { html, ttRenderMs } = await ssr(process.env.INDEX_HTML_PATH, browserWSEndpoint);
+  const url = `${process.env.BASE_URL}${req.url}`;
+  const { html, ttRenderMs } = await ssr(url, browserWSEndpoint);
   res.set('Server-Timing', `Prerender;dur=${ttRenderMs};desc="Headless render time (ms)"`);
   return res.status(200).send(html);
 });
