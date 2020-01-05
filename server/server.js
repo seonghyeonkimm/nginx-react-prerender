@@ -9,6 +9,7 @@ const ssr = require('./ssr');
 const PORT = process.env.PORT;
 let browserWSEndpoint = null;
 
+
 const app = express();
 app.get('*', async (req, res) => {
   if (!browserWSEndpoint) {
@@ -24,4 +25,15 @@ app.get('*', async (req, res) => {
   return res.status(200).send(html);
 });
 
-app.listen(PORT, () => console.log(`Prerender server is listening to ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Prerender server is listening to ${PORT}`));
+const shutDown = async () => {
+  if (browserWSEndpoint) {
+    const browser = await puppeteer.connect({ browserWSEndpoint });
+    await browser.close();
+  };
+
+  server.close();
+};
+
+process.on('SIGINT', shutDown);
+process.on('SIGTERM', shutDown);
