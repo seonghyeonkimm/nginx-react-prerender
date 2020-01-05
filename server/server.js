@@ -1,3 +1,4 @@
+const url = require('url');
 const dotenv = require('dotenv');
 dotenv.config()
 
@@ -15,8 +16,10 @@ app.get('*', async (req, res) => {
     browserWSEndpoint = await browser.wsEndpoint();
   }
 
-  const url = `${process.env.BASE_URL}${req.url}`;
-  const { html, ttRenderMs } = await ssr(url, browserWSEndpoint);
+  const requestUrl = `${process.env.BASE_URL}${req.url}`;
+  const { protocol, hostname, pathname } = url.parse(requestUrl);
+  const targetUrl = `${protocol}//${hostname}${pathname}`;
+  const { html, ttRenderMs } = await ssr(targetUrl, browserWSEndpoint);
   res.set('Server-Timing', `Prerender;dur=${ttRenderMs};desc="Headless render time (ms)"`);
   return res.status(200).send(html);
 });
