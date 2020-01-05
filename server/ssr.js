@@ -37,7 +37,8 @@ async function ssr(url, browserWSEndpoint) {
       { timeout: 3000 },
     );
     html = await page.content();
-    await browser.close();
+    await page.close();
+    browser.disconnect();
 
     RENDER_CACHE.set(url, html);
   } catch (e) {
