@@ -12,7 +12,7 @@ let browserWSEndpoint = null;
 const app = express();
 app.get('*', async (req, res) => {
   if (!browserWSEndpoint) {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: true });
     browserWSEndpoint = await browser.wsEndpoint();
   }
 
